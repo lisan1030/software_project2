@@ -1,0 +1,108 @@
+#include <Servo.h>
+#include <math.h> 
+
+
+#define PIN_SERVO 10     
+#define PIN_TRIG 12        
+#define PIN_ECHO 13        
+
+
+Servo myServo;
+const int OPEN_ANGLE = 90; 
+const int CLOSE_ANGLE = 0; 
+int targetAngle = CLOSE_ANGLE;
+int currentAngle = CLOSE_ANGLE;
+unsigned long MOVING_TIME = 1000;
+unsigned long moveStartTime;
+
+const int CAR_DETECT_DISTANCE_CM = 20; 
+long duration;
+int distance;
+
+bool isCarDetected = false;
+
+
+double cosineEasing(double t) {
+
+  if (t < 0) return 0.0;
+  if (t > 1) return 1.0;
+
+
+  return (1.0 - cos(t * PI)) / 2.0;
+}
+
+
+int getD() {
+  digitalWrite(PIN_TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(PIN_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(PIN_TRIG, LOW);
+
+  duration = pulseIn(PIN_ECHO, HIGH, 30000);  
+
+
+  distance = duration / 58;
+
+  if (distance > 400 || distance <= 0) {
+    return 999; 
+  }
+  return distance;
+}
+
+
+void setup() {
+  myServo.attach(PIN_SERVO);
+  myServo.write(CLOSE_ANGLE);
+
+  pinMode(PIN_TRIG, OUTPUT);
+  pinMode(PIN_ECHO, INPUT);
+
+  Serial.begin(9600);
+}
+
+
+void loop() {
+
+  distance = getD();
+
+  bool newCarDetected = (distance > 0 && distance <= CAR_DETECT_DISTANCE_CM);
+
+  if (newCarDetected != isCarDetected) {
+    isCarDetected = newCarDetected;
+    moveStartTime = millis(); 
+
+
+    currentAngle = myServo.read(); 
+
+    if (isCarDetected) {
+      targetAngle = OPEN_ANGLE; 
+    } else {
+      targetAngle = CLOSE_ANGLE; 
+    }
+  }
+
+
+  if (myServo.read() != targetAngle) {
+    unsigned long progress = millis() - moveStartTime;
+
+    if (progress < MOVING_TIME) {
+
+      double t = (double)progress / MOVING_TIME;
+
+
+      double easingValue = cosineEasing(t);
+
+
+
+      int angle = round(currentAngle + (targetAngle - currentAngle) * easingValue);
+
+      myServo.write(angle);
+    } else {
+
+      myServo.write(targetAngle);
+    }
+  }
+
+  delay(50); 
+}
