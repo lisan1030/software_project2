@@ -6,27 +6,27 @@
 #define PIN_IR    A0
 
 // Event interval parameters
-#define _INTERVAL_DIST    100 // distance sensor interval (unit: ms)
-#define _INTERVAL_SERVO   100 // servo interval (unit: ms)
-#define _INTERVAL_SERIAL  100 // serial interval (unit: ms)
+#define _INTERVAL_DIST    50 // distance sensor interval (unit: ms)
+#define _INTERVAL_SERVO   50 // servo interval (unit: ms)
+#define _INTERVAL_SERIAL  50 // serial interval (unit: ms)
 
 // EMA filter configuration for the IR distance sensor
-#define _EMA_ALPHA 0.5    // EMA weight of new sample (range: 0 to 1)
+#define _EMA_ALPHA 0.65    // EMA weight of new sample (range: 0 to 1)
                           // Setting EMA to 1 effectively disables EMA filter.
 
 // Servo adjustment - Set _DUTY_MAX, _NEU, _MIN with your own numbers
 #define _DUTY_MAX 2100 // 2000
-#define _DUTY_NEU 1550 // 1500
+#define _DUTY_NEU 1600 // 1500
 #define _DUTY_MIN 1050 // 1000
 
-#define _SERVO_ANGLE_DIFF  ???   // Replace with |D - E| degree
-#define _SERVO_SPEED       3   // servo speed 
+#define _SERVO_ANGLE_DIFF  3   // Replace with |D - E| degree
+#define _SERVO_SPEED       20   // servo speed 
 
 // Target Distance
 #define _DIST_TARGET    155 // Center of the rail (unit: mm)
 
 // PID parameters
-#define _KP  1    // proportional gain
+#define _KP  4    // proportional gain
 //#define _KD 0.0   // derivative gain
 //#define _KI 0.0   // integral gain
 
@@ -90,7 +90,7 @@ void loop()
     event_dist = false;
 
     // get a distance reading from the distance sensor
-    dist_filtered = volt_to_distance(ir_sensor_filtered(???, ???, 0));
+    dist_filtered = volt_to_distance(ir_sensor_filtered(13, 0.5, 0));
     dist_ema = _EMA_ALPHA * dist_filtered + (1.0 - _EMA_ALPHA) * dist_ema;
 
     // Update PID variables
@@ -153,7 +153,7 @@ float volt_to_distance(int a_value)
 {
   // Replace next line into your own equation
   // return (6762.0 / (a_value - 9) - 4.0) * 10.0; 
-  return (6762.0 / (a_value - 9) - 4.0) * 10.0; 
+  return 488.0 + (-1.57 * a_value) + (1.27E-03 * a_value * a_value);
 }
 
 int compare(const void *a, const void *b) {
