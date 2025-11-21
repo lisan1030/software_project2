@@ -15,15 +15,15 @@
                           // Setting EMA to 1 effectively disables EMA filter.
 
 // Servo adjustment - Set _DUTY_MAX, _NEU, _MIN with your own numbers
-#define _DUTY_MAX 2100 // 2000
+#define _DUTY_MAX 2150 // 2000
 #define _DUTY_NEU 1585 // 1500
 #define _DUTY_MIN 1050 // 1000
 
 #define _SERVO_ANGLE_DIFF  2.9   // Replace with |D - E| degree
-#define _SERVO_SPEED       20   // servo speed 
+#define _SERVO_SPEED       18   // servo speed 
 
 // Target Distance
-#define _DIST_TARGET    156 // Center of the rail (unit: mm)
+#define _DIST_TARGET    160 // Center of the rail (unit: mm)
 
 // PID parameters
 #define _KP  4.3    // proportional gain
