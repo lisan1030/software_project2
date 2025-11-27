@@ -11,7 +11,7 @@
 #define _INTERVAL_SERIAL  80  // serial interval (unit: ms)
 
 // EMA filter configuration for the IR distance sensor
-#define _EMA_ALPHA 0.7    // EMA weight of new sample (range: 0 to 1)
+#define _EMA_ALPHA 0.4    // EMA weight of new sample (range: 0 to 1)
                           // Setting EMA to 1 effectively disables EMA filter
 
 // Servo adjustment - Set _DUTY_MAX, _NEU, _MIN with your own numbers
@@ -65,7 +65,7 @@ void setup() {
   // initialize serial port
   Serial.begin(1000000);
 
-  dist_ema = volt_to_distance(ir_sensor_filtered(???, ???, 0));
+  dist_ema = volt_to_distance(ir_sensor_filtered(13, 0.5, 0));
   error_current = error_prev = _DIST_TARGET - dist_ema;
 }
   
@@ -93,7 +93,7 @@ void loop() {
     event_dist = false;
 
     // get a distance reading from the distance sensor
-    dist_filtered = volt_to_distance(ir_sensor_filtered(???, ???, 0));
+    dist_filtered = volt_to_distance(ir_sensor_filtered(13, 0.5, 0));
     dist_ema = _EMA_ALPHA * dist_filtered + (1.0 - _EMA_ALPHA) * dist_ema;
 
    // PID control logic
