@@ -26,13 +26,13 @@
 #define _DUTY_NEU 1600 // 1500
 #define _DUTY_MIN 1100 // 1000
 
-#define _SERVO_ANGLE_DIFF    // Replace with |D - E| degree
-#define _SERVO_SPEED       30  // servo speed 
+#define _SERVO_ANGLE_DIFF  60  // Replace with |D - E| degree
+#define _SERVO_SPEED       100  // servo speed 
 
 // PID parameters
 #define _KP 6.0   // proportional gain
-#define _KD 20.0   // derivative gain
-#define _KI 0.9   // integral gain
+#define _KD 100.0   // derivative gain
+#define _KI 0.1   // integral gain
 
 // global variables
 
@@ -214,7 +214,7 @@ float volt_to_distance(int a_value)
 {
   // Replace next line into your own equation
   // return (6762.0 / (a_value - 9) - 4.0) * 10.0; 
-  return 566 + -2.11x + 2.61E-03x^2 + -1.08E-06x^3;
+  return 566 + -2.11*a_value + 2.61E-03*a_value*a_value + -1.08E-06*a_value*a_value*a_value;
 }
 
 int compare(const void *a, const void *b) {
