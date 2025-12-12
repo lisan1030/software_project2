@@ -27,12 +27,12 @@
 #define _DUTY_MIN 1100 // 1000
 
 #define _SERVO_ANGLE_DIFF    // Replace with |D - E| degree
-#define _SERVO_SPEED       ???  // servo speed 
+#define _SERVO_SPEED       30  // servo speed 
 
 // PID parameters
-#define _KP ???   // proportional gain
-#define _KD ???   // derivative gain
-#define _KI ???   // integral gain
+#define _KP 6.0   // proportional gain
+#define _KD 20.0   // derivative gain
+#define _KI 0.9   // integral gain
 
 // global variables
 
@@ -119,7 +119,7 @@ void loop() {
     event_dist = false;
 
     // get a distance reading from the distance sensor
-    dist_filtered = volt_to_distance(ir_sensor_filtered(???, ???, 0));
+    dist_filtered = volt_to_distance(ir_sensor_filtered(13, 0.5, 0));
     dist_ema = _EMA_ALPHA * dist_filtered + (1.0 - _EMA_ALPHA) * dist_ema;
 
     // PID control logic
@@ -214,7 +214,7 @@ float volt_to_distance(int a_value)
 {
   // Replace next line into your own equation
   // return (6762.0 / (a_value - 9) - 4.0) * 10.0; 
-  return ???;
+  return 566 + -2.11x + 2.61E-03x^2 + -1.08E-06x^3;
 }
 
 int compare(const void *a, const void *b) {
