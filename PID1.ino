@@ -18,7 +18,7 @@
 /////////////////////////////////////////////////////////////////////////
 
 // EMA filter configuration for the IR distance sensor
-#define _EMA_ALPHA 0.7    // EMA weight of new sample (range: 0 to 1)
+#define _EMA_ALPHA 0.4    // EMA weight of new sample (range: 0 to 1)
                           // Setting EMA to 1 effectively disables EMA filter
 
 // Servo adjustment - Set _DUTY_MAX, _NEU, _MIN with your own numbers
@@ -31,8 +31,8 @@
 
 // PID parameters
 #define _KP 6.0   // proportional gain
-#define _KD 100.0   // derivative gain
-#define _KI 0.1   // integral gain
+#define _KD 450.0   // derivative gain
+#define _KI 0.0000001   // integral gain
 
 // global variables
 
